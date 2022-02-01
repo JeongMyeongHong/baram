@@ -15,7 +15,84 @@ public class CharacterDTO {
     private String id;
     private String pw;
     private String nickname;
-    private String job;
+    private String job = "평민";
+    private int gold;
+    private int hp = 50;
+    private int hpNow;
+    private int mp = 50;
+    private int mpNow;
+    private int exp;
+
+    public int getHpNow() {
+        return hpNow;
+    }
+
+    public void setHpNow(int hpNow) {
+        this.hpNow = hpNow;
+    }
+
+    public int getMpNow() {
+        return mpNow;
+    }
+
+    public void setMpNow(int mpNow) {
+        this.mpNow = mpNow;
+    }
+
+    private int lv = 1;
+    private int dmg = 1;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getMp() {
+        return mp;
+    }
+
+    public void setMp(int mp) {
+        this.mp = mp;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public int getLv() {
+        return lv;
+    }
+
+    public void setLv(int lv) {
+        this.lv = lv;
+    }
+
+    public int getDmg() {
+        return dmg;
+    }
+
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
+    }
 
     public CharacterDTO(String id, String pw, String nickname){
         this.id = id;
