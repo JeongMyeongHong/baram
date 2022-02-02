@@ -2,6 +2,7 @@ package com.gaud.baram.controller;
 
 import com.gaud.baram.domain.CharacterDTO;
 import com.gaud.baram.service.IdService;
+import com.gaud.baram.service.JobService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class BaramMain {
     IdService idService = new IdService();
     Map<String, CharacterDTO> characterDB = new HashMap<>();
     CharacterDTO loadedCharacter = new CharacterDTO("","","");
-
+    JobService jobService = new JobService();
 
     public static void main(String[] args) {
         BaramMain game = new BaramMain();
@@ -64,58 +65,62 @@ public class BaramMain {
                         "1.처음하기\n" +
                         "2.이어하기\n" +
                         "0.게임종료");
-                switch (scanner.nextInt()) {
-                    case 1://처음하기
+                switch (scanner.next()) {
+                    case "1"://처음하기
                         System.out.println("계정 생성\n" +
                                 "ID, PW, NickName 입력.");
                         String creatID = scanner.next();
                         String creatPW = scanner.next();
                         String creatNickname = scanner.next();
-                        CharacterDTO loadedCharacter =
+                        loadedCharacter =
                                 idService.creatID(characterDB, creatID, creatPW, creatNickname);
                         characterDB.put(creatID, loadedCharacter);
                         System.out.println(String.format
                                 ("ID : %s\tPW : %s\t닉 : %s", loadedCharacter.getId(), loadedCharacter.getPw(), loadedCharacter.getNickname()));
                         break;
-                    case 2://이어하기
+                    case "2"://이어하기
                         System.out.println("이어하기\n" +
                                 "ID, PW 입력");
                         String joinID = scanner.next();
                         String joinPW = scanner.next();
-                        loadedCharacter = characterDB.get(joinID);                        System.out.println(loadedCharacter.getStatus());
-                        idService.loadID(loadedCharacter, joinID, joinPW );//이어하기, 계정로드
-                        System.out.println(loadedCharacter.getStatus());
+                        loadedCharacter = characterDB.get(joinID);
+                        idService.loadID(loadedCharacter, joinID, joinPW);
                         break;
-                    case 0:
+                    case "0":
                         return;
                     default:
                         System.out.println("잘못된 선택입니다.");
                         break;
                 }
             }
-            System.out.println(loadedCharacter.getStatus());
 
             if (loadedCharacter.getStatus() == 1) {//로그인 완료
                 System.out.println("===메인메뉴===\n" +
                         "1.정보보기\n" +
                         "2.사냥하기\n" +
                         "3.전직/승급하기\n" +
-                        "9.뒤로가기\n" +
+                        "9.로그아웃\n" +
                         "0.게임종료");
-                switch (scanner.nextInt()) {
-                    case 1:
-                        idService.showInfo(loadedCharacter);//정보보기
+                switch (scanner.next()) {
+                    case "1"://정보보기
+                        idService.showInfo(loadedCharacter);
                         break;
-                    case 2:
+                    case "2":
                         //hunt();//사냥하기
                         break;
-                    case 3:
-                        //getJob();//전직/승급하기
+                    case "3"://전직/승급하기
+                        System.out.println("전직하기.\n" +
+                                "전 사\t" +
+                                "도 적\t" +
+                                "주술사\t" +
+                                "도 사\n" +
+                                "원하시는 직업의 이름을 입력해주세요.");
+                        jobService.getJob(loadedCharacter, scanner.next());
                         break;
-                    case 9:
+                    case "9"://로그아웃
                         loadedCharacter.setStatus(0);
                         break;
-                    case 0:
+                    case "0":
                         return;
                     default:
                         System.out.println("잘못된 선택입니다.");

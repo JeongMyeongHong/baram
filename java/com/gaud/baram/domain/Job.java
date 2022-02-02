@@ -13,11 +13,11 @@ package com.gaud.baram.domain;
  */
 public interface Job {
 
-    int basicAtt();
+    int basicAtt(CharacterDTO loadedCharacter);
 
-    int skillAtt(String attSkill, int dmg, int hpNow, int mpNow);
+    int skillAtt(CharacterDTO loadedCharacter);
 
-    int recHp(int hp, int hpNow);
+    void recHp(CharacterDTO loadedCharacter);
 
-    int recMp(int mp, int mpNow);
+    void recMp(CharacterDTO loadedCharacter);
 }
