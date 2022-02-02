@@ -22,6 +22,32 @@ public class CharacterDTO {
     private int mp = 50;
     private int mpNow;
     private int exp;
+    private int expNow;
+    private int lv = 1;
+    private int dmg = 1;
+    private int status;
+
+    public CharacterDTO(String id, String pw, String nickname) {
+        this.id = id;
+        this.pw = pw;
+        this.nickname = nickname;
+    }
+
+    public int getExpNow() {
+        return expNow;
+    }
+
+    public void setExpNow(int expNow) {
+        this.expNow = expNow;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public int getHpNow() {
         return hpNow;
@@ -38,9 +64,6 @@ public class CharacterDTO {
     public void setMpNow(int mpNow) {
         this.mpNow = mpNow;
     }
-
-    private int lv = 1;
-    private int dmg = 1;
 
     public void setId(String id) {
         this.id = id;
@@ -92,12 +115,6 @@ public class CharacterDTO {
 
     public void setDmg(int dmg) {
         this.dmg = dmg;
-    }
-
-    public CharacterDTO(String id, String pw, String nickname){
-        this.id = id;
-        this.pw = pw;
-        this.nickname = nickname;
     }
 
     public String getId() {

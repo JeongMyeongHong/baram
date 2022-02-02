@@ -1,6 +1,7 @@
 package com.gaud.baram.controller;
 
 import com.gaud.baram.domain.CharacterDTO;
+import com.gaud.baram.service.IdService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,62 +47,44 @@ import java.util.Scanner;
  */
 public class BaramMain {
     Scanner scanner = new Scanner(System.in);
+    IdService idService = new IdService();
     Map<String, CharacterDTO> characterDB = new HashMap<>();
-    CharacterDTO loadedCharacter;
-    int status;
+    CharacterDTO loadedCharacter = new CharacterDTO("","","");
 
 
-    private void CreatID() {
-        System.out.println("계정 생성/n" +
-                "ID, PW, NickName 입력.");
-        // 가입 로직 진행
-        String id = scanner.next();
-        if (characterDB.containsKey(id)) {
-            CharacterDTO character = new CharacterDTO(id, scanner.next(), scanner.next());
-            characterDB.put(character.getId(), character);
-        } else {
-            System.out.println("이미 존재하는 ID 입니다.");
-        }
-    }
-
-    private void LoadID() {
-        System.out.println("이어하기/n" +
-                "ID, PW 입력");
-        String id = scanner.next();
-        this.loadedCharacter = characterDB.get(id);
-        if (loadedCharacter.getId().equals(scanner.next())) {
-            status = 1;
-        }
-
-    }
-
-    public void showInfo() {
-        System.out.println("정보보기 페이지 입니다.");
-
-    }
-
-    private void hunt() {
-        System.out.println("사냥터");
-    }
-
-    private void getJob() {
-        System.out.println("전직/승급하기");
+    public static void main(String[] args) {
+        BaramMain game = new BaramMain();
+        game.runGame();
     }
 
     public void runGame() {
         while (true) {
-
-            if (status == 0) { //메인화면
+            if (loadedCharacter.getStatus() == 0) { //메인화면
                 System.out.println("===바람의나라===\n" +
                         "1.처음하기\n" +
                         "2.이어하기\n" +
                         "0.게임종료");
                 switch (scanner.nextInt()) {
-                    case 1:
-                        CreatID();//처음하기, 계정생성 메소드 호출
+                    case 1://처음하기
+                        System.out.println("계정 생성\n" +
+                                "ID, PW, NickName 입력.");
+                        String creatID = scanner.next();
+                        String creatPW = scanner.next();
+                        String creatNickname = scanner.next();
+                        CharacterDTO loadedCharacter =
+                                idService.creatID(characterDB, creatID, creatPW, creatNickname);
+                        characterDB.put(creatID, loadedCharacter);
+                        System.out.println(String.format
+                                ("ID : %s\tPW : %s\t닉 : %s", loadedCharacter.getId(), loadedCharacter.getPw(), loadedCharacter.getNickname()));
                         break;
-                    case 2:
-                        LoadID();//이어하기, 계정로드
+                    case 2://이어하기
+                        System.out.println("이어하기\n" +
+                                "ID, PW 입력");
+                        String joinID = scanner.next();
+                        String joinPW = scanner.next();
+                        loadedCharacter = characterDB.get(joinID);                        System.out.println(loadedCharacter.getStatus());
+                        idService.loadID(loadedCharacter, joinID, joinPW );//이어하기, 계정로드
+                        System.out.println(loadedCharacter.getStatus());
                         break;
                     case 0:
                         return;
@@ -109,7 +92,10 @@ public class BaramMain {
                         System.out.println("잘못된 선택입니다.");
                         break;
                 }
-            } else if (status == 1) {//로그인 완료
+            }
+            System.out.println(loadedCharacter.getStatus());
+
+            if (loadedCharacter.getStatus() == 1) {//로그인 완료
                 System.out.println("===메인메뉴===\n" +
                         "1.정보보기\n" +
                         "2.사냥하기\n" +
@@ -118,16 +104,16 @@ public class BaramMain {
                         "0.게임종료");
                 switch (scanner.nextInt()) {
                     case 1:
-                        showInfo();//정보보기
+                        idService.showInfo(loadedCharacter);//정보보기
                         break;
                     case 2:
-                        hunt();//사냥하기
+                        //hunt();//사냥하기
                         break;
                     case 3:
-                        getJob();//전직/승급하기
+                        //getJob();//전직/승급하기
                         break;
                     case 9:
-                        status = 0;
+                        loadedCharacter.setStatus(0);
                         break;
                     case 0:
                         return;
@@ -137,11 +123,5 @@ public class BaramMain {
                 }
             }
         }
-    }
-
-
-    public static void main(String[] args) {
-        BaramMain game = new BaramMain();
-        game.runGame();
     }
 }
