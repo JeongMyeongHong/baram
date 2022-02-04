@@ -1,4 +1,6 @@
-package com.gaud.baram.domain;
+package com.gaud.baram.domain.job;
+
+import com.gaud.baram.domain.character.CharacterDTO;
 
 /**
  * packageName   :   com.gaud.baram.domain
@@ -14,7 +16,24 @@ package com.gaud.baram.domain;
 public class Warrior implements Job {
     String attSkill = "백호참";
     String rechpSkill = "누리의기원";
-    String recmpSkill = "뭐드라..";
+    String recmpSkill = "백세주원샷";
+    int rechp = 50;
+    int recmp = 50;
+
+    @Override
+    public String getAttSkill() {
+        return this.attSkill;
+    }
+
+    @Override
+    public String getRechpSkill() {
+        return this.rechpSkill;
+    }
+
+    @Override
+    public String getRecmpSkill() {
+        return this.recmpSkill;
+    }
 
     @Override
     public int basicAtt(CharacterDTO loadedCharacter) {
@@ -34,7 +53,7 @@ public class Warrior implements Job {
     }
 
     @Override
-    public void recHp(CharacterDTO loadedCharacter) {
+    public int recHp(CharacterDTO loadedCharacter) {
         if (loadedCharacter.getMpNow() >= 10) {
             System.out.println(rechpSkill + "을 사용합니다.");
             loadedCharacter.minusMpNow(10);
@@ -42,10 +61,11 @@ public class Warrior implements Job {
         } else {
             System.out.println("마나가 부족하여 사용할 수 없습니다.");
         }
+        return rechp;
     }
 
     @Override
-    public void recMp(CharacterDTO loadedCharacter) {
+    public int recMp(CharacterDTO loadedCharacter) {
         if (loadedCharacter.getHpNow() >= 10) {
             System.out.println(recmpSkill + "을 사용합니다.");
             loadedCharacter.setMpNow(loadedCharacter.getMp());
@@ -53,5 +73,6 @@ public class Warrior implements Job {
         } else {
             System.out.println("체력이 부족하여 사용할 수 없습니다.");
         }
+        return 0;
     }
 }

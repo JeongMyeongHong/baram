@@ -1,4 +1,7 @@
-package com.gaud.baram.domain;
+package com.gaud.baram.domain.character;
+
+import com.gaud.baram.domain.job.Commoner;
+import com.gaud.baram.domain.job.Job;
 
 /**
  * packageName   :   com.gaud.baram.domain
@@ -15,17 +18,35 @@ public class CharacterDTO {
     private String id;
     private String pw;
     private String nickname;
-    private String job = "평민";
+    private String jobName = "평민";
     private int gold;
     private int hp = 50;
     private int hpNow;
     private int mp = 50;
     private int mpNow;
-    private int exp = 100;
-    private int expNow;
     private int lv = 1;
+    private int exp = 10;
+    private int expNow;
     private int dmg = 1;
     private int status;
+    public Job job = new Commoner();
+
+
+    public void resetCharacter(){
+        this.hpNow = this.hp;
+        this.mpNow = this.mp;
+    }
+
+    public void lvUpCharacter(){
+        this.lv++;
+        this.hp = this.hp * this.lv;
+        this.mp = this.mp * this.lv;
+        this.exp = this.exp * this.lv;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
 
     public CharacterDTO(String id, String pw, String nickname) {
         this.id = id;
@@ -53,12 +74,12 @@ public class CharacterDTO {
         this.nickname = nickname;
     }
 
-    public String getJob() {
-        return job;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setJob(String job) {
-        this.job = job;
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
 
@@ -139,8 +160,8 @@ public class CharacterDTO {
         return exp;
     }
 
-    public void setExp(int exp) {
-        this.exp = exp;
+    public void setExpNow(int exp) {
+        this.expNow += exp;
     }
 
     public int getExpNow() {
@@ -154,11 +175,6 @@ public class CharacterDTO {
     public int getLv() {
         return lv;
     }
-
-    public void plusLv(int lv) {
-        this.lv += lv;
-    }
-
 
     public int getDmg() {
         return dmg;

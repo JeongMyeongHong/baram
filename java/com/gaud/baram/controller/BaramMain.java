@@ -1,6 +1,7 @@
 package com.gaud.baram.controller;
 
-import com.gaud.baram.domain.CharacterDTO;
+import com.gaud.baram.domain.character.CharacterDTO;
+import com.gaud.baram.service.HuntService;
 import com.gaud.baram.service.IdService;
 import com.gaud.baram.service.JobService;
 
@@ -50,8 +51,9 @@ public class BaramMain {
     Scanner scanner = new Scanner(System.in);
     IdService idService = new IdService();
     Map<String, CharacterDTO> characterDB = new HashMap<>();
-    CharacterDTO loadedCharacter = new CharacterDTO("","","");
+    CharacterDTO loadedCharacter = new CharacterDTO("", "", "");
     JobService jobService = new JobService();
+    HuntService huntService = new HuntService();
 
     public static void main(String[] args) {
         BaramMain game = new BaramMain();
@@ -106,7 +108,21 @@ public class BaramMain {
                         idService.showInfo(loadedCharacter);
                         break;
                     case "2":
-                        //hunt();//사냥하기
+                        while (true) {
+                            System.out.println("사냥터 가기\n1. 토끼 2. 다람쥐 0. 나가기");
+                            String sel = scanner.next();
+                            //if(sel.equals("0")) break;
+                            huntService.startHunt(loadedCharacter, sel);
+                            loadedCharacter.resetCharacter();
+                            System.out.println(String.format("1. 평타 2. %s 3. %s 4. %s",
+                                    loadedCharacter.job.getAttSkill(), loadedCharacter.job.getRechpSkill(), loadedCharacter.job.getRecmpSkill()
+                            ));
+
+                            if (huntService.huntMons(loadedCharacter, scanner.next()) <= 0) {
+                                huntService.clearMons(loadedCharacter);
+                                break;
+                            }
+                        }
                         break;
                     case "3"://전직/승급하기
                         System.out.println("전직하기.\n" +

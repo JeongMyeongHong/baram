@@ -1,6 +1,6 @@
 package com.gaud.baram.service;
 
-import com.gaud.baram.domain.CharacterDTO;
+import com.gaud.baram.domain.character.CharacterDTO;
 
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public class IdService {
                 "최대 마력 : %d\n" +
                 "현재 경험치 / 최대경험치 : %d / %d\n" +
                 "데미지 : %d\n" +
-                "보유 골드 : %d\n", loadedCharacter.getNickname(), loadedCharacter.getJob(), loadedCharacter.getLv(),
+                "보유 골드 : %d\n", loadedCharacter.getNickname(), loadedCharacter.getJobName(), loadedCharacter.getLv(),
                 loadedCharacter.getHp(), loadedCharacter.getMp(), loadedCharacter.getExpNow(), loadedCharacter.getExp()
                 , loadedCharacter.getDmg(), loadedCharacter.getGold()
         ));

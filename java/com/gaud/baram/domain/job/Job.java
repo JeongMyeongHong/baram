@@ -1,4 +1,6 @@
-package com.gaud.baram.domain;
+package com.gaud.baram.domain.job;
+
+import com.gaud.baram.domain.character.CharacterDTO;
 
 /**
  * packageName   :   com.gaud.baram.domain
@@ -13,11 +15,15 @@ package com.gaud.baram.domain;
  */
 public interface Job {
 
+    String getAttSkill();
+    String getRechpSkill();
+    String getRecmpSkill();
+
     int basicAtt(CharacterDTO loadedCharacter);
 
     int skillAtt(CharacterDTO loadedCharacter);
 
-    void recHp(CharacterDTO loadedCharacter);
+    int recHp(CharacterDTO loadedCharacter);
 
-    void recMp(CharacterDTO loadedCharacter);
+    int recMp(CharacterDTO loadedCharacter);
 }

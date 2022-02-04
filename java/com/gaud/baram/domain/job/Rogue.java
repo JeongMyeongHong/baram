@@ -1,8 +1,10 @@
-package com.gaud.baram.domain;
+package com.gaud.baram.domain.job;
+
+import com.gaud.baram.domain.character.CharacterDTO;
 
 /**
  * packageName   :   com.gaud.baram.domain
- * fileName      :   Poet
+ * fileName      :   Rogue
  * author        :   JeongMyeongHong
  * date          :   2022-02-01
  * desc          :
@@ -11,10 +13,28 @@ package com.gaud.baram.domain;
  * ============================================
  * 2022-02-01      JeongMyoengHong     최초 생성
  */
-public class Poet implements Job {
-    String attSkill = "지진";
-    String rechpSkill = "봉황의기원";
-    String recmpSkill = "명상";
+public class Rogue implements Job {
+    String attSkill = "백호검무";
+    String rechpSkill = "천공의기원";
+    String recmpSkill = "운기";
+    int rechp = 50;
+    int recmp = 50;
+
+
+    @Override
+    public String getAttSkill() {
+        return this.attSkill;
+    }
+
+    @Override
+    public String getRechpSkill() {
+        return this.rechpSkill;
+    }
+
+    @Override
+    public String getRecmpSkill() {
+        return this.recmpSkill;
+    }
 
     @Override
     public int basicAtt(CharacterDTO loadedCharacter) {
@@ -34,7 +54,7 @@ public class Poet implements Job {
     }
 
     @Override
-    public void recHp(CharacterDTO loadedCharacter) {
+    public int recHp(CharacterDTO loadedCharacter) {
         if (loadedCharacter.getMpNow() >= 10) {
             System.out.println(rechpSkill + "을 사용합니다.");
             loadedCharacter.minusMpNow(10);
@@ -42,10 +62,11 @@ public class Poet implements Job {
         } else {
             System.out.println("마나가 부족하여 사용할 수 없습니다.");
         }
+        return rechp;
     }
 
     @Override
-    public void recMp(CharacterDTO loadedCharacter) {
+    public int recMp(CharacterDTO loadedCharacter) {
         if (loadedCharacter.getHpNow() >= 10) {
             System.out.println(recmpSkill + "을 사용합니다.");
             loadedCharacter.setMpNow(loadedCharacter.getMp());
@@ -53,5 +74,6 @@ public class Poet implements Job {
         } else {
             System.out.println("체력이 부족하여 사용할 수 없습니다.");
         }
+        return 0;
     }
 }
