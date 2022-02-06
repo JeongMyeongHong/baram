@@ -47,6 +47,9 @@ public class HuntService {
             case "4":
                 System.out.println(String.format("마력이 %d 만큼 올랐습니다. 현재 체력 %d", loadedCharacter.job.recMp(loadedCharacter), loadedCharacter.getMpNow()));
                 break;
+            case "5":
+                System.out.println(String.format("%s에게서 도망갑니다.",monster.getMonsName()));
+                break;
             default:
                 System.out.println("잘못된 선택입니다.");
         }
