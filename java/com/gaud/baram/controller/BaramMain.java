@@ -109,18 +109,27 @@ public class BaramMain {
                         break;
                     case "2":
                         while (true) {
+                            loadedCharacter.resetCharacter();
                             System.out.println("사냥터 가기\n1. 토끼 2. 다람쥐 0. 나가기");
                             String sel = scanner.next();
-                            //if(sel.equals("0")) break;
-                            huntService.startHunt(loadedCharacter, sel);
-                            loadedCharacter.resetCharacter();
-                            System.out.println(String.format("1. 평타 2. %s 3. %s 4. %s",
-                                    loadedCharacter.job.getAttSkill(), loadedCharacter.job.getRechpSkill(), loadedCharacter.job.getRecmpSkill()
-                            ));
-
-                            if (huntService.huntMons(loadedCharacter, scanner.next()) <= 0) {
-                                huntService.clearMons(loadedCharacter);
+                            if (sel.equals("0")) {
+                                System.out.println("사냥터을 종료합니다.");
                                 break;
+                            } else {
+                                huntService.startHunt(loadedCharacter, sel);
+                                while (true) {
+                                    System.out.println(String.format("1. 평타 2. %s 3. %s 4. %s 5. 도망가기",
+                                            loadedCharacter.job.getAttSkill(), loadedCharacter.job.getRechpSkill(), loadedCharacter.job.getRecmpSkill()
+                                    ));
+                                    String userOption = scanner.next();
+                                    if (huntService.huntMons(loadedCharacter, userOption) <= 0) {
+                                        huntService.killMons(loadedCharacter);
+                                        break;
+                                    }
+                                    else if(userOption.equals("5")){
+                                        break;
+                                    }
+                                }
                             }
                         }
                         break;
