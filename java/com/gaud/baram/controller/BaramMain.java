@@ -1,6 +1,7 @@
 package com.gaud.baram.controller;
 
 import com.gaud.baram.domain.character.CharacterDTO;
+import com.gaud.baram.domain.monster.FieldOfMons;
 import com.gaud.baram.service.HuntService;
 import com.gaud.baram.service.IdService;
 import com.gaud.baram.service.JobService;
@@ -54,6 +55,7 @@ public class BaramMain {
     CharacterDTO loadedCharacter = new CharacterDTO("", "", "");
     JobService jobService = new JobService();
     HuntService huntService = new HuntService();
+    FieldOfMons fieldOfMons = new FieldOfMons();
 
     public static void main(String[] args) {
         BaramMain game = new BaramMain();
@@ -110,27 +112,32 @@ public class BaramMain {
                     case "2":
                         while (true) {
                             loadedCharacter.resetCharacter();
-                            System.out.println("사냥터 가기\n1. 토끼 2. 다람쥐 0. 나가기");
-                            String sel = scanner.next();
-                            if (sel.equals("0")) {
-                                System.out.println("사냥터을 종료합니다.");
+                            System.out.println("사냥터 가기\n1. 왕초보사냥터 2. 쥐굴 3. 돼지굴 4. 전갈굴 0. 나가기");
+                            String selField = scanner.next();
+                            if (selField.equals("0")) {
+                                System.out.println("사냥을 종료합니다.");
                                 break;
                             } else {
-                                huntService.startHunt(loadedCharacter, sel);
                                 while (true) {
-                                    System.out.println(String.format("1. 평타 2. %s 3. %s 4. %s 5. 도망가기",
-                                            loadedCharacter.job.getAttSkill(), loadedCharacter.job.getRechpSkill(), loadedCharacter.job.getRecmpSkill()
-                                    ));
-                                    String userOption = scanner.next();
-                                    if (huntService.huntMons(loadedCharacter, userOption) <= 0) {
-                                        huntService.killMons(loadedCharacter);
-                                        break;
-                                    }
-                                    else if(userOption.equals("5")){
+                                    if (huntService.startHunt(loadedCharacter, fieldOfMons.selectField(selField), scanner.next()) != 3) {
+                                        while (true) {
+                                            System.out.println(String.format("1. 평타 2. %s 3. %s 4. %s 5. 도망가기",
+                                                    loadedCharacter.job.getAttSkill(), loadedCharacter.job.getRechpSkill(), loadedCharacter.job.getRecmpSkill()
+                                            ));
+                                            String userOption = scanner.next();
+                                            if (huntService.huntMons(loadedCharacter, userOption) <= 0) {
+                                                huntService.killMons(loadedCharacter);
+                                                break;
+                                            } else if (userOption.equals("5")) {
+                                                break;
+                                            }
+                                        }
+                                    }else{
                                         break;
                                     }
                                 }
                             }
+
                         }
                         break;
                     case "3"://전직/승급하기

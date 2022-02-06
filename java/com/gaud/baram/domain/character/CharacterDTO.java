@@ -41,7 +41,7 @@ public class CharacterDTO {
         this.lv++;
         this.hp = this.hp * this.lv;
         this.mp = this.mp * this.lv;
-        this.exp = this.exp * this.lv;
+        this.exp = 10 * this.lv;
     }
 
     public void setJob(Job job) {
