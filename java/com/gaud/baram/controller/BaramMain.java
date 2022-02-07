@@ -65,100 +65,100 @@ public class BaramMain {
     public void runGame() {
         while (true) {
             if (loadedCharacter.getStatus() == 0) { //메인화면
-                System.out.println("===바람의나라===\n" +
-                        "1.처음하기\n" +
-                        "2.이어하기\n" +
-                        "0.게임종료");
-                switch (scanner.next()) {
-                    case "1"://처음하기
-                        System.out.println("계정 생성\n" +
-                                "ID, PW, NickName 입력.");
-                        String creatID = scanner.next();
-                        String creatPW = scanner.next();
-                        String creatNickname = scanner.next();
-                        loadedCharacter =
-                                idService.creatID(characterDB, creatID, creatPW, creatNickname);
-                        characterDB.put(creatID, loadedCharacter);
-                        System.out.println(String.format
-                                ("ID : %s\tPW : %s\t닉 : %s", loadedCharacter.getId(), loadedCharacter.getPw(), loadedCharacter.getNickname()));
-                        break;
-                    case "2"://이어하기
-                        System.out.println("이어하기\n" +
-                                "ID, PW 입력");
-                        String joinID = scanner.next();
-                        String joinPW = scanner.next();
-                        loadedCharacter = characterDB.get(joinID);
-                        idService.loadID(loadedCharacter, joinID, joinPW);
-                        break;
-                    case "0":
-                        return;
-                    default:
-                        System.out.println("잘못된 선택입니다.");
-                        break;
-                }
+                firstDisplay();
+            }else if (loadedCharacter.getStatus() == 1) {//로그인 완료
+                accessSuccess();
             }
+        }
+    }
 
-            if (loadedCharacter.getStatus() == 1) {//로그인 완료
-                System.out.println("===메인메뉴===\n" +
-                        "1.정보보기\n" +
-                        "2.사냥하기\n" +
-                        "3.전직/승급하기\n" +
-                        "9.로그아웃\n" +
-                        "0.게임종료");
-                switch (scanner.next()) {
-                    case "1"://정보보기
-                        idService.showInfo(loadedCharacter);
+    private void firstDisplay() {
+        System.out.println("===바람의나라===\n" +
+                "1.처음하기\n" +
+                "2.이어하기\n" +
+                "0.게임종료");
+        switch (scanner.next()) {
+            case "1"://처음하기
+                System.out.println("계정 생성\n" +
+                        "ID, PW, NickName 입력.");
+                String creatID = scanner.next();
+                String creatPW = scanner.next();
+                String creatNickname = scanner.next();
+                loadedCharacter =
+                        idService.creatID(characterDB, creatID, creatPW, creatNickname);
+                characterDB.put(creatID, loadedCharacter);
+                System.out.println(String.format
+                        ("ID : %s\tPW : %s\t닉 : %s", loadedCharacter.getId(), loadedCharacter.getPw(), loadedCharacter.getNickname()));
+                break;
+            case "2"://이어하기
+                System.out.println("이어하기\n" +
+                        "ID, PW 입력");
+                String joinID = scanner.next();
+                String joinPW = scanner.next();
+                loadedCharacter = characterDB.get(joinID);
+                idService.loadID(loadedCharacter, joinID, joinPW);
+                break;
+            case "0":
+                return ;
+            default:
+                System.out.println("잘못된 선택입니다.");
+                break;
+        }
+    }
+
+    private void accessSuccess() {
+        System.out.println("===메인메뉴===\n" +
+                "1.정보보기\n" +
+                "2.사냥하기\n" +
+                "3.전직/승급하기\n" +
+                "9.로그아웃\n" +
+                "0.게임종료");
+        switch (scanner.next()) {
+            case "1"://정보보기
+                idService.showInfo(loadedCharacter);
+                break;
+            case "2":
+                while (true) {
+                    loadedCharacter.resetCharacter();
+                    System.out.println("사냥터 가기\n1. 왕초보사냥터 2. 쥐굴 3. 돼지굴 4. 전갈굴 0. 나가기");
+                    String selField = scanner.next();
+                    if (selField.equals("0")) {
+                        System.out.println("사냥을 종료합니다.");
                         break;
-                    case "2":
+                    } else {
                         while (true) {
-                            loadedCharacter.resetCharacter();
-                            System.out.println("사냥터 가기\n1. 왕초보사냥터 2. 쥐굴 3. 돼지굴 4. 전갈굴 0. 나가기");
-                            String selField = scanner.next();
-                            if (selField.equals("0")) {
-                                System.out.println("사냥을 종료합니다.");
-                                break;
-                            } else {
+                            if (huntService.startHunt(loadedCharacter, fieldOfMons.selectField(selField), scanner.next()) != 3) {
                                 while (true) {
-                                    if (huntService.startHunt(loadedCharacter, fieldOfMons.selectField(selField), scanner.next()) != 3) {
-                                        while (true) {
-                                            System.out.println(String.format("1. 평타 2. %s 3. %s 4. %s 5. 도망가기",
-                                                    loadedCharacter.job.getAttSkill(), loadedCharacter.job.getRechpSkill(), loadedCharacter.job.getRecmpSkill()
-                                            ));
-                                            String userOption = scanner.next();
-                                            if (huntService.huntMons(loadedCharacter, userOption) <= 0) {
-                                                huntService.killMons(loadedCharacter);
-                                                break;
-                                            } else if (userOption.equals("5")) {
-                                                break;
-                                            }
-                                        }
-                                    }else{
+                                    System.out.println(String.format("1. 평타 2. %s 3. %s 4. %s 5. 도망가기",
+                                            loadedCharacter.job.getAttSkill(), loadedCharacter.job.getRechpSkill(), loadedCharacter.job.getRecmpSkill()
+                                    ));
+                                    String userOption = scanner.next();
+                                    if (huntService.huntMons(loadedCharacter, userOption) <= 0) {
+                                        huntService.killMons(loadedCharacter);
+                                        break;
+                                    } else if (userOption.equals("5")) {
                                         break;
                                     }
                                 }
+                            }else{
+                                break;
                             }
-
                         }
-                        break;
-                    case "3"://전직/승급하기
-                        System.out.println("전직하기.\n" +
-                                "전 사\t" +
-                                "도 적\t" +
-                                "주술사\t" +
-                                "도 사\n" +
-                                "원하시는 직업의 이름을 입력해주세요.");
-                        jobService.getJob(loadedCharacter, scanner.next());
-                        break;
-                    case "9"://로그아웃
-                        loadedCharacter.setStatus(0);
-                        break;
-                    case "0":
-                        return;
-                    default:
-                        System.out.println("잘못된 선택입니다.");
-                        break;
+                    }
+
                 }
-            }
+                break;
+            case "3"://전직/승급하기
+                jobService.getJob(loadedCharacter, scanner);
+                break;
+            case "9"://로그아웃
+                loadedCharacter.setStatus(0);
+                break;
+            case "0":
+                return;
+            default:
+                System.out.println("잘못된 선택입니다.");
+                break;
         }
     }
 }
